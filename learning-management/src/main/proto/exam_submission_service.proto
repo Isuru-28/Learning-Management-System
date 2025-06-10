@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.learning_management.grpc";
+import "google/api/annotations.proto";
+
+service ExamSubmissionService {
+
+  rpc UpdateExamSubmissionMarks (UpdateExamSubmissionMarksRequest) returns (UpdateExamSubmissionMarksResponse){
+    option (google.api.http) = {
+      put: "/api/marks"
+      body: "*"
+    };
+  }
+
+  rpc ResetExamSubmissionMarks (ResetExamSubmissionMarksRequest) returns (ResetExamSubmissionMarksResponse){
+    option (google.api.http) = {
+      delete: "/api/resetmark"
+      body: "*"
+    };
+  }
+
+}
+
+message ExamSubmissionMark {
+  int64 id = 1;
+  double marks = 2;
+}
+
+// add/update marks
+message UpdateExamSubmissionMarksRequest {
+  repeated ExamSubmissionMark exam_submission_marks = 1;
+}
+
+message UpdateExamSubmissionMarksResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// reset marks to null
+message ResetExamSubmissionMarksRequest {
+  repeated int64 submission_ids = 1;
+}
+
+message ResetExamSubmissionMarksResponse {
+  bool success = 1;
+  string message = 2;
+}
